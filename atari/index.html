@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ATARI</title>
+        <link id="icon" rel="icon" type="" href="/home/wifiengine/Desktop/[code]/ATARI/icon.png">
+        <style>
+            body {
+                margin: 0%;
+            }
+            
+            canvas {
+                margin: 0%;
+                width: 100%;
+                height: 100%;
+            }
+
+            #bounce {
+                display: none;
+            }
+
+        </style>
+    </head>
+    
+    <body>
+
+        <canvas id="canvas" width="100%" height="100%"></canvas>
+        <audio controls="" id="bounce">
+            <source src="C:\Users\Wifi\Downloads\sounds\zapsplat_sport_soccer_ball_single_bounce_on_grass_002_39277.mp3" type="">
+        </audio>
+        <script>
+var canvas = document.getElementById("canvas");
+var draw = canvas.getContext("2d");
+var x = 500;
+var y = 643;
+var bx = 15 + Math.random()*window.innerWidth - 30;
+var by = 15 + Math.random()*window.innerHeight -30;
+var speedx = 2;
+var speedy = 2;
+var score = 0;
+var timen = 0;
+var level = 0;
+var col = 0;
+var colors = ["#F26419","#00cc44"," #ff0000","#DEB841"];
+var lev;
+var scores = []
+var bounce = document.getElementById("bounce");
+
+canvas.style.background="#2A324A";
+
+
+
+
+function init() {
+setInterval(run, 10);
+setInterval(time,1000);
+lev = setInterval(leveln,10000);
+}
+init()
+
+
+
+
+
+function run(run) {
+ 
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+
+
+if(bx - 15 < 0 || bx + 15 > window.innerWidth) {
+    speedx = -speedx;
+}
+if(by - 15 < 0) {
+    speedy = -speedy;
+}
+
+if(by + 15 > 663 - 20 && bx + 15 > x && bx - 15 < x + 200 && by - 15 < 663) {
+speedy = -speedy;
+score += 1;
+scores.push(score);
+col += 1;
+bounce.play();
+    
+
+
+if(col > colors.length - 1) {
+    col = 0;
+}
+}
+
+if(by - 15 > 663) {
+    gameover();
+}
+
+if((bx < 0 || bx > window.innerWidth || by < 0) && by < 663) {
+    location.reload();
+}
+
+function gameover() {
+
+
+
+
+    draw.fillStyle = "rgba(0,0,0,0.5)";
+    draw.fillRect(0,0,window.innerWidth,window.innerHeight);
+    draw.fill();
+    
+    draw.font = "30px arial";
+    draw.textAlign = "center";
+    draw.fillStyle = "#ffffff";
+    draw.fillText("GAME OVER!",window.innerWidth / 2,window.innerHeight / 2);
+    draw.fillText("Score: " + score,window.innerWidth / 2,window.innerHeight / 2 + 40);
+    draw.fillText("Level: " + level,window.innerWidth / 2,window.innerHeight / 2 + 80);
+    draw.fillText("Click anywhere to continue",window.innerWidth / 2,window.innerHeight / 2 + 160);
+
+    clearInterval(lev);
+
+    window.addEventListener("mousedown",function() {
+    location.reload();      
+    });
+
+
+
+}
+
+
+draw.beginPath();    
+draw.fillStyle = colors[col];
+draw.moveTo(x,y);
+draw.lineTo(x+200,y)
+draw.lineTo(x+210,y+10);
+draw.lineTo(x+200,y+20);
+draw.lineTo(x,y+20);
+draw.lineTo(x-10,y+10);
+draw.lineTo(x,y);
+draw.fill();
+draw.closePath();
+
+draw.beginPath();
+draw.fillStyle = "#5CABFF";
+draw.arc(bx,by,15,0,2*Math.PI);
+draw.fill();
+draw.closePath();
+
+bx += speedx;
+by -= speedy;
+
+draw.font = "20px arial";
+draw.textAlign = "right";
+draw.fillStyle = "#ffffff";
+draw.fillText("Score: " + score,1350,30);
+
+draw.font = "20px arial";
+draw.textAlign = "left";
+draw.fillStyle = "#ffffff";
+draw.fillText("Time: " + timen,10,30);
+
+draw.font = "20px arial";
+draw.textAlign = "center";
+draw.fillStyle = "#ffffff";
+draw.fillText("Level: " + level,600,30);
+
+
+
+};
+
+window.addEventListener("mousemove",function (e) {
+    x = e.clientX -100;
+});
+
+
+
+function time(time) {
+timen += 1;
+};
+
+function leveln(leveln) {
+level += 1;
+
+if(speedx > 0) {
+    speedx += 1;
+}
+else {
+    speedx -= 1;
+}
+if(speedy > 0) {
+    speedy += 1;
+}
+else {
+    speedy -= 1;
+}
+
+
+}
+
+
+        </script>
+    </body>        
+    
+</html>
